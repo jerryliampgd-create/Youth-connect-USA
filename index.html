@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Connect USA</title>
+<meta name="description" content="Youth Connect USA helps newcomer and first-generation youth turn their first day in a new country into a lifetime of belonging.">
+
+<!-- Fonts: Fraunces (display) / Inter (body) / IBM Plex Mono (labels & data) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  :root{
+    --navy:#152238;
+    --navy-deep:#0E1626;
+    --coral:#E8674A;
+    --gold:#F2A93B;
+    --cream:#FDF6EC;
+    --teal:#0F3D3E;
+    --ink:#1B2430;
+    --line: rgba(27,36,48,0.12);
+    --radius: 14px;
+    --wrap: 1080px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0 0 .5em;
+    letter-spacing:-0.01em;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px;}
+  img{max-width:100%;display:block;}
+  ul{padding-left:1.2em;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(253,246,236,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;max-width:var(--wrap);margin:0 auto;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Fraunces',serif;font-weight:700;font-size:19px;
+  }
+  .brand .mark{
+    width:30px;height:30px;border-radius:50%;
+    background:conic-gradient(from 210deg, var(--coral), var(--gold), var(--teal), var(--coral));
+    flex-shrink:0;
+  }
+  nav#primary-nav{display:flex;gap:26px;flex-wrap:wrap;}
+  nav#primary-nav a{
+    font-size:14px;font-weight:600;color:var(--navy);
+    padding:6px 2px;border-bottom:2px solid transparent;
+    transition:border-color .15s;
+  }
+  nav#primary-nav a:hover, nav#primary-nav a.active{border-color:var(--coral);}
+  #nav-toggle{display:none;}
+  .burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;}
+
+  @media (max-width:760px){
+    nav#primary-nav{
+      display:none;position:absolute;top:100%;left:0;right:0;
+      background:var(--cream);flex-direction:column;gap:0;
+      border-bottom:1px solid var(--line);padding:8px 24px 16px;
+    }
+    nav#primary-nav.open{display:flex;}
+    nav#primary-nav a{padding:10px 0;border-bottom:1px solid var(--line);}
+    .burger{display:block;}
+  }
+
+  /* ---------- Hero (horizon / arrival motif) ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 42%, var(--coral) 78%, var(--gold) 100%);
+    color:var(--cream);
+    padding:96px 24px 140px;
+  }
+  .hero .sun{
+    position:absolute;left:50%;bottom:-90px;
+    width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #FFE9C2, var(--gold) 60%, var(--coral) 100%);
+    transform:translateX(-50%);
+    box-shadow:0 0 120px 40px rgba(242,169,59,0.35);
+    animation: rise 1.4s ease-out;
+  }
+  @media (prefers-reduced-motion: reduce){ .hero .sun{animation:none;} }
+  @keyframes rise{ from{transform:translate(-50%, 60px); opacity:0;} to{transform:translate(-50%,0); opacity:1;} }
+  .hero-inner{position:relative;z-index:2;max-width:640px;margin:0 auto;text-align:center;}
+  .hero .eyebrow{color:var(--gold);margin-bottom:14px;display:block;}
+  .hero h1{font-size:clamp(30px,5vw,50px);color:var(--cream);}
+  .hero p.lede{font-size:17px;color:rgba(253,246,236,0.86);max-width:520px;margin:0 auto 30px;}
+  .hero .horizon-line{
+    position:absolute;left:0;right:0;bottom:96px;height:1px;
+    background:rgba(253,246,236,0.25);z-index:2;
+  }
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.04em;
+    padding:13px 22px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;
+    display:inline-block;
+  }
+  .btn-primary{background:var(--cream);color:var(--navy-deep);}
+  .btn-primary:hover{background:#fff;}
+  .btn-ghost{border-color:rgba(253,246,236,0.5);color:var(--cream);}
+  .btn-ghost:hover{border-color:var(--cream);}
+
+  /* ---------- Stamp badge (signature element) ---------- */
+  .stamp{
+    --stamp-color: var(--teal);
+    display:inline-flex;align-items:center;justify-content:center;
+    width:64px;height:64px;border-radius:50%;
+    border:2px solid var(--stamp-color);
+    color:var(--stamp-color);
+    position:relative;flex-shrink:0;
+    transform:rotate(-8deg);
+  }
+  .stamp::before{
+    content:"";position:absolute;inset:6px;border-radius:50%;
+    border:1px dashed var(--stamp-color);opacity:.6;
+  }
+  .stamp svg{position:absolute;inset:0;}
+  .stamp .stamp-txt{
+    font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;
+  }
+  .stamp.coral{--stamp-color:var(--coral);}
+  .stamp.gold{--stamp-color:var(--gold);}
+
+  /* ---------- Sections ---------- */
+  section{padding:72px 24px;}
+  .section-head{max-width:560px;margin-bottom:40px;}
+  .section-head .eyebrow{color:var(--coral);margin-bottom:10px;display:block;}
+
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:860px){.card-grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;display:flex;flex-direction:column;gap:12px;height:100%;
+  }
+  .card h3{font-size:19px;}
+  .card p{font-size:14.5px;color:#4a5568;margin:0;flex-grow:1;}
+  .card .link{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--coral);letter-spacing:.05em;}
+
+  .blog-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .blog-card .cover{width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--navy);}
+  .blog-card .body{padding:20px;display:flex;flex-direction:column;gap:8px;flex-grow:1;}
+  .blog-card .meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7a8290;letter-spacing:.04em;}
+  .blog-card h3{font-size:18px;}
+  .blog-card p{font-size:14px;color:#4a5568;margin:0;}
+  .tag-new{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+    color:var(--coral);border:1px solid var(--coral);border-radius:999px;padding:3px 9px;
+    width:fit-content;
+  }
+
+  .video-card{background:var(--navy-deep);border-radius:var(--radius);overflow:hidden;color:var(--cream);}
+  .video-card .frame{aspect-ratio:16/9;background:#000;}
+  .video-card .frame iframe, .video-card .frame video{width:100%;height:100%;border:0;}
+  .video-card .body{padding:18px;}
+  .video-card h3{font-size:16px;color:var(--cream);margin-bottom:4px;}
+  .video-card p{font-size:13px;color:rgba(253,246,236,0.7);margin:0;}
+
+  .band-teal{background:var(--teal);color:var(--cream);}
+  .band-teal .section-head .eyebrow{color:var(--gold);}
+  .band-teal h2{color:var(--cream);}
+
+  /* Contact / reach us */
+  .reach-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:760px){.reach-grid{grid-template-columns:1fr;}}
+  .reach-card{
+    background:rgba(253,246,236,0.06);border:1px solid rgba(253,246,236,0.18);
+    border-radius:var(--radius);padding:24px;
+  }
+  .reach-card .eyebrow{color:var(--gold);margin-bottom:10px;display:block;}
+  .reach-card a{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:var(--cream);border-bottom:1px solid var(--gold);}
+
+  /* Page (dynamic) */
+  .page-shell{padding:70px 24px 90px;max-width:720px;margin:0 auto;}
+  .page-shell .stamp{margin-bottom:22px;}
+  .page-shell .content{font-size:16.5px;color:#33404f;}
+  .page-shell .content p{margin:0 0 1.1em;}
+
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;font-weight:600;color:var(--coral);margin-bottom:24px;
+  }
+
+  footer{background:var(--navy-deep);color:rgba(253,246,236,0.7);padding:46px 24px 32px;}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:center;}
+  footer .foot-brand{font-family:'Fraunces',serif;color:var(--cream);font-size:17px;}
+  footer .foot-links{display:flex;gap:18px;font-size:13px;}
+  footer .fine{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(253,246,236,0.4);margin-top:22px;}
+
+  .empty-note{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;color:#7a8290;
+    border:1px dashed var(--line);border-radius:var(--radius);padding:28px;text-align:center;
+  }
+  .loading{padding:60px 24px;text-align:center;color:#7a8290;font-family:'IBM Plex Mono',monospace;font-size:13px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-row">
+    <a href="#/" class="brand"><span class="mark"></span> Youth Connect USA</a>
+    <button class="burger" id="burger" aria-label="Toggle menu">☰</button>
+    <nav id="primary-nav"></nav>
+  </div>
+</header>
+
+<main id="app">
+  <div class="loading">Loading…</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">Youth Connect USA</div>
+    <div class="foot-links">
+      <a href="#/">Home</a>
+      <a href="#/blog">Blog</a>
+      <a href="#/videos">Videos</a>
+      <a href="#/contact">Reach Us</a>
+    </div>
+  </div>
+  <div class="wrap fine">Built by young people, for young people arriving somewhere new. · <a href="/admin.html" style="text-decoration:underline;">Admin</a></div>
+</footer>
+
+<script>
+/* ============================================================
+   1. SUPABASE CONFIG — paste your project's values here
+   Find these in Supabase Dashboard > Project Settings > API
+   ============================================================ */
+const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ============================================================
+   2. STAMP SVG HELPER (signature visual element)
+   ============================================================ */
+function stamp(text, colorClass=""){
+  return `<div class="stamp ${colorClass}"><span class="stamp-txt">${text}</span></div>`;
+}
+
+function isNew(dateStr){
+  const days = (Date.now() - new Date(dateStr).getTime()) / 86400000;
+  return days <= 14;
+}
+
+function fmtDate(d){
+  return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function youtubeEmbed(url){
+  const m = url.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{6,})/);
+  if(m) return `https://www.youtube.com/embed/${m[1]}`;
+  return null;
+}
+
+/* ============================================================
+   3. NAV — built from published pages marked show_in_nav,
+   plus the fixed Blog / Videos / Reach Us links
+   ============================================================ */
+async function renderNav(){
+  const nav = document.getElementById('primary-nav');
+  const { data: pages } = await sb.from('pages')
+    .select('slug,title,sort_order')
+    .eq('is_published', true).eq('show_in_nav', true)
+    .order('sort_order', { ascending:true });
+
+  let html = `<a href="#/">Home</a>`;
+  (pages||[]).forEach(p => html += `<a href="#/page/${p.slug}">${escapeHtml(p.title)}</a>`);
+  html += `<a href="#/blog">Blog</a><a href="#/videos">Videos</a><a href="#/contact">Reach Us</a>`;
+  nav.innerHTML = html;
+
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => nav.classList.remove('open'));
+  });
+}
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('primary-nav').classList.toggle('open');
+});
+
+/* ============================================================
+   4. VIEWS
+   ============================================================ */
+async function getSettings(){
+  const { data } = await sb.from('site_settings').select('key,value');
+  const map = {};
+  (data||[]).forEach(r => map[r.key] = r.value);
+  return map;
+}
+
+async function viewHome(){
+  const s = await getSettings();
+  const [{data: pages}, {data: posts}, {data: videos}] = await Promise.all([
+    sb.from('pages').select('*').eq('is_published',true).eq('show_in_nav',true).order('sort_order').limit(3),
+    sb.from('blog_posts').select('*').eq('is_published',true).order('published_at',{ascending:false}).limit(3),
+    sb.from('videos').select('*').eq('is_published',true).order('sort_order').limit(1),
+  ]);
+
+  return `
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow">${escapeHtml(s.hero_eyebrow||'YOU HAVE ARRIVED')}</span>
+      <h1>${escapeHtml(s.hero_headline||'Every journey here starts with one step onto new ground.')}</h1>
+      <p class="lede">${escapeHtml(s.hero_subhead||'')}</p>
+      <div class="cta-row">
+        <a href="#/blog" class="btn btn-primary">Read our stories</a>
+        <a href="#/contact" class="btn btn-ghost">Reach us</a>
+      </div>
+    </div>
+    <div class="horizon-line"></div>
+    <div class="sun"></div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">START HERE</span>
+        <h2>Where new arrivals begin</h2>
+      </div>
+      <div class="card-grid">
+        ${(pages&&pages.length) ? pages.map(p => `
+          <div class="card">
+            ${stamp('YC','coral')}
+            <h3>${escapeHtml(p.title)}</h3>
+            <p>${escapeHtml(stripHtml(p.content)).slice(0,110)}${stripHtml(p.content).length>110?'…':''}</p>
+            <a class="link" href="#/page/${p.slug}">READ →</a>
+          </div>`).join('') : `<div class="empty-note">No pages published yet — add one from the admin dashboard.</div>`}
+      </div>
+    </div>
+  </section>
+
+  <section class="band-teal">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">FROM THE JOURNAL</span>
+        <h2>Latest from the blog</h2>
+      </div>
+      <div class="card-grid">
+        ${(posts&&posts.length) ? posts.map(postCard).join('') : `<div class="empty-note" style="border-color:rgba(253,246,236,0.25);color:rgba(253,246,236,0.6);">No posts published yet.</div>`}
+      </div>
+    </div>
+  </section>
+
+  ${ (videos&&videos.length) ? `
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">WATCH</span>
+        <h2>Video spotlight</h2>
+      </div>
+      <div class="card-grid" style="grid-template-columns:1fr;max-width:640px;">
+        ${videoCard(videos[0])}
+      </div>
+    </div>
+  </section>` : '' }
+  `;
+}
+
+function stripHtml(h){ const d=document.createElement('div'); d.innerHTML=h||''; return d.textContent||''; }
+
+function postCard(p){
+  return `
+  <div class="blog-card">
+    ${p.cover_image_url ? `<img class="cover" src="${p.cover_image_url}" alt="">` : `<div class="cover"></div>`}
+    <div class="body">
+      ${isNew(p.published_at) ? `<span class="tag-new">NEW ARRIVAL</span>` : ''}
+      <h3>${escapeHtml(p.title)}</h3>
+      <p>${escapeHtml(p.excerpt)}</p>
+      <div class="meta">${fmtDate(p.published_at)} · ${escapeHtml(p.author)}</div>
+      <a class="link" style="color:var(--coral);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;" href="#/blog/${p.slug}">READ ARTICLE →</a>
+    </div>
+  </div>`;
+}
+
+function videoCard(v){
+  const embed = youtubeEmbed(v.video_url);
+  const frame = embed
+    ? `<iframe src="${embed}" title="${escapeHtml(v.title)}" allowfullscreen loading="lazy"></iframe>`
+    : `<video src="${v.video_url}" controls></video>`;
+  return `
+  <div class="video-card">
+    <div class="frame">${frame}</div>
+    <div class="body">
+      <h3>${escapeHtml(v.title)}</h3>
+      <p>${escapeHtml(v.description)}</p>
+    </div>
+  </div>`;
+}
+
+async function viewBlogList(){
+  const { data: posts } = await sb.from('blog_posts').select('*').eq('is_published',true).order('published_at',{ascending:false});
+  return `
+  <section class="page-shell" style="max-width:${'var(--wrap)'};">
+    <div class="section-head">
+      <span class="eyebrow">JOURNAL</span>
+      <h2>Stories from the road here</h2>
+    </div>
+    <div class="card-grid">
+      ${(posts&&posts.length) ? posts.map(postCard).join('') : `<div class="empty-note">No posts yet.</div>`}
+    </div>
+  </section>`;
+}
+
+async function viewBlogPost(slug){
+  const { data: p } = await sb.from('blog_posts').select('*').eq('slug',slug).eq('is_published',true).single();
+  if(!p) return notFound();
+  return `
+  <article class="page-shell">
+    <a class="back-link" href="#/blog">← Back to the journal</a>
+    ${p.cover_image_url ? `<img src="${p.cover_image_url}" style="border-radius:var(--radius);margin-bottom:24px;aspect-ratio:16/9;object-fit:cover;">` : ''}
+    <div class="eyebrow" style="color:var(--coral);">${fmtDate(p.published_at)} · ${escapeHtml(p.author)}</div>
+    <h1 style="font-size:clamp(26px,4vw,38px);margin-top:6px;">${escapeHtml(p.title)}</h1>
+    <div class="content">${p.content}</div>
+  </article>`;
+}
+
+async function viewVideos(){
+  const { data: videos } = await sb.from('videos').select('*').eq('is_published',true).order('sort_order');
+  return `
+  <section class="page-shell" style="max-width:var(--wrap);">
+    <div class="section-head">
+      <span class="eyebrow">WATCH</span>
+      <h2>Video library</h2>
+    </div>
+    <div class="card-grid">
+      ${(videos&&videos.length) ? videos.map(videoCard).join('') : `<div class="empty-note">No videos yet.</div>`}
+    </div>
+  </section>`;
+}
+
+async function viewPage(slug){
+  const { data: p } = await sb.from('pages').select('*').eq('slug',slug).eq('is_published',true).single();
+  if(!p) return notFound();
+  return `
+  <article class="page-shell">
+    ${stamp('YC')}
+    <h1>${escapeHtml(p.title)}</h1>
+    <div class="content">${p.content}</div>
+  </article>`;
+}
+
+async function viewContact(){
+  const s = await getSettings();
+  return `
+  <section class="band-teal" style="padding:80px 24px 90px;">
+    <div class="wrap" style="max-width:760px;">
+      <div class="section-head">
+        <span class="eyebrow">HOW TO REACH US</span>
+        <h2>Find the welcome desk</h2>
+        <p style="color:rgba(253,246,236,0.75);">Whatever step of the journey you're on, someone is on the other end.</p>
+      </div>
+      <div class="reach-grid">
+        <div class="reach-card">
+          <span class="eyebrow">EMAIL</span>
+          <a href="mailto:${escapeHtml(s.contact_email||'')}">${escapeHtml(s.contact_email||'—')}</a>
+        </div>
+        <div class="reach-card">
+          <span class="eyebrow">PHONE</span>
+          <a href="tel:${escapeHtml((s.contact_phone||'').replace(/[^0-9+]/g,''))}">${escapeHtml(s.contact_phone||'—')}</a>
+        </div>
+        <div class="reach-card">
+          <span class="eyebrow">LOCATION</span>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;">${escapeHtml(s.contact_address||'—')}</div>
+        </div>
+        <div class="reach-card">
+          <span class="eyebrow">FOLLOW</span>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            ${s.social_instagram ? `<a href="${s.social_instagram}" target="_blank">Instagram</a>` : ''}
+            ${s.social_tiktok ? `<a href="${s.social_tiktok}" target="_blank">TikTok</a>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function notFound(){
+  return `<div class="page-shell"><div class="empty-note">That page hasn't landed yet. <a href="#/" style="color:var(--coral);">Go home →</a></div></div>`;
+}
+
+/* ============================================================
+   5. ROUTER
+   ============================================================ */
+const app = document.getElementById('app');
+
+async function router(){
+  app.innerHTML = `<div class="loading">Loading…</div>`;
+  const hash = location.hash.replace(/^#\/?/, '');
+  const parts = hash.split('/').filter(Boolean);
+  let html = '';
+  try{
+    if(parts.length === 0) html = await viewHome();
+    else if(parts[0] === 'blog' && parts[1]) html = await viewBlogPost(parts[1]);
+    else if(parts[0] === 'blog') html = await viewBlogList();
+    else if(parts[0] === 'videos') html = await viewVideos();
+    else if(parts[0] === 'contact') html = await viewContact();
+    else if(parts[0] === 'page' && parts[1]) html = await viewPage(parts[1]);
+    else html = notFound();
+  }catch(e){
+    console.error(e);
+    html = `<div class="page-shell"><div class="empty-note">Something didn't load. Check that SUPABASE_URL / SUPABASE_ANON_KEY are set correctly in index.html.</div></div>`;
+  }
+  app.innerHTML = html;
+  window.scrollTo(0,0);
+
+  // highlight active nav link
+  document.querySelectorAll('#primary-nav a').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href') === '#/'+hash);
+  });
+}
+
+window.addEventListener('hashchange', router);
+window.addEventListener('DOMContentLoaded', () => { renderNav(); router(); });
+</script>
+</body>
+</html>
