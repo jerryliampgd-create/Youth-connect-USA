@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Connect USA</title>
+<meta name="description" content="Youth Connect USA — connecting young people to mentors, opportunity, and community.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14132B;
+  --ink-2:#211F45;
+  --paper:#FAFAFC;
+  --violet:#6C4CFF;
+  --violet-light:#B7A6FF;
+  --coral:#FF5C7A;
+  --gold:#FFB800;
+  --sky:#2FB4FF;
+  --mint:#00D9A0;
+  --white:#FFFFFF;
+  --ink-muted:#615F7A;
+  --radius:16px;
+  --shadow:0 16px 40px rgba(20,19,43,0.10);
+  --shadow-lg:0 24px 60px rgba(20,19,43,0.22);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+}
+h1,h2,h3,.display{
+  font-family:'Sora',sans-serif;
+  font-weight:800;
+  color:var(--ink);
+  margin:0 0 0.5em;
+  line-height:1.1;
+  letter-spacing:-0.01em;
+}
+p{margin:0 0 1em;color:var(--ink-muted);}
+a{color:var(--violet);}
+button{font-family:inherit;cursor:pointer;}
+img{max-width:100%;display:block;}
+
+.container{max-width:1160px;margin:0 auto;padding:0 24px;}
+
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,250,252,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(20,19,43,0.08);
+}
+.nav-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;max-width:1160px;margin:0 auto;
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Sora',sans-serif;font-weight:800;font-size:1.15rem;
+  color:var(--ink);text-decoration:none;white-space:nowrap;
+}
+.logo-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--violet) 0%,var(--coral) 55%,var(--gold) 100%);
+  flex-shrink:0;
+}
+.tabs{
+  display:flex;gap:4px;list-style:none;margin:0;padding:0;
+  overflow-x:auto;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none;}
+.tabs button{
+  background:none;border:none;padding:10px 16px;border-radius:999px;
+  font-size:0.95rem;font-weight:700;color:var(--ink);white-space:nowrap;
+  transition:background 0.15s ease, color 0.15s ease;
+}
+.tabs button:hover{background:rgba(108,76,255,0.08);}
+.tabs button.active{background:var(--ink);color:var(--white);}
+.nav-toggle{display:none;background:none;border:none;padding:8px;}
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+  content:'';display:block;width:22px;height:2px;background:var(--ink);
+  position:relative;transition:0.2s;
+}
+.nav-toggle span::before{position:absolute;top:-7px;}
+.nav-toggle span::after{position:absolute;top:7px;}
+
+@media (max-width:820px){
+  .nav-toggle{display:block;}
+  .tabs{
+    display:none;flex-direction:column;width:100%;
+    position:absolute;top:100%;left:0;background:var(--paper);
+    padding:8px 24px 16px;border-bottom:1px solid rgba(20,19,43,0.08);
+  }
+  .tabs.open{display:flex;}
+  .tabs button{width:100%;text-align:left;}
+}
+
+.hero{
+  position:relative;overflow:hidden;
+  background:var(--ink);
+  padding:110px 24px 90px;
+  color:var(--white);
+}
+.hero::before{
+  content:'';position:absolute;top:-140px;left:-120px;width:420px;height:420px;
+  background:var(--violet);border-radius:50%;filter:blur(90px);opacity:0.55;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-160px;right:-100px;width:460px;height:460px;
+  background:var(--coral);border-radius:50%;filter:blur(100px);opacity:0.45;
+}
+.hero-blob-gold{
+  position:absolute;top:30%;right:8%;width:220px;height:220px;
+  background:var(--gold);border-radius:50%;filter:blur(80px);opacity:0.35;z-index:0;
+}
+.hero-inner{max-width:820px;margin:0 auto;text-align:center;position:relative;z-index:2;}
+.hero .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--white);background:rgba(255,255,255,0.12);
+  padding:8px 16px;border-radius:999px;margin-bottom:22px;
+}
+.hero h1{color:var(--white);font-size:clamp(2.4rem,6vw,4.2rem);margin-bottom:0.4em;}
+.hero .highlight{background:linear-gradient(90deg,var(--gold),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p.lead{color:rgba(255,255,255,0.78);font-size:1.2rem;max-width:600px;margin:0 auto 36px;}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:999px;
+  font-weight:700;font-size:0.98rem;text-decoration:none;border:2px solid transparent;
+  transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{background:linear-gradient(90deg,var(--gold),var(--coral));color:var(--ink);box-shadow:0 10px 26px rgba(255,92,122,0.35);}
+.btn-outline{background:transparent;color:var(--white);border-color:rgba(255,255,255,0.5);}
+.btn-navy{background:var(--ink);color:var(--white);box-shadow:0 8px 22px rgba(20,19,43,0.25);}
+
+.section{padding:80px 24px;}
+.section-head{max-width:640px;margin:0 auto 44px;text-align:center;}
+.section-head .eyebrow{
+  font-size:0.78rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--coral);display:block;margin-bottom:12px;
+}
+.section-head h2{font-size:clamp(1.8rem,4vw,2.6rem);}
+
+.grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+
+.card{
+  background:var(--white);border-radius:var(--radius);padding:26px;
+  box-shadow:var(--shadow);border:1px solid rgba(20,19,43,0.05);
+  display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;}
+.card.accent-video::before{background:linear-gradient(90deg,var(--coral),var(--gold));}
+.card.accent-article::before{background:linear-gradient(90deg,var(--sky),var(--violet));}
+.card.accent-pdf::before{background:linear-gradient(90deg,var(--gold),var(--mint));}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.card.featured{grid-column:span 2;padding:34px;}
+@media (max-width:640px){.card.featured{grid-column:span 1;}}
+
+.card .type-badge{
+  align-self:flex-start;font-size:0.72rem;font-weight:800;letter-spacing:0.06em;
+  text-transform:uppercase;padding:5px 12px;border-radius:999px;
+}
+.badge-video{background:#FFE4EA;color:#C2184A;}
+.badge-article{background:#E0F1FF;color:#0B5FA5;}
+.badge-pdf{background:#FFF2CC;color:#8A5A00;}
+.card h3{font-size:1.15rem;margin-bottom:4px;}
+.card.featured h3{font-size:1.5rem;}
+.card p{font-size:0.95rem;margin-bottom:0;}
+.card .card-link{
+  margin-top:auto;font-weight:800;font-size:0.9rem;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;color:var(--ink);
+}
+
+.tab-intro{max-width:720px;margin:0 auto 44px;text-align:center;}
+.tab-intro h1{font-size:clamp(1.9rem,4vw,2.8rem);}
+.tab-intro p{font-size:1.05rem;}
+
+.empty-state{
+  text-align:center;padding:52px 24px;color:var(--ink-muted);
+  border:1.5px dashed rgba(20,19,43,0.18);border-radius:var(--radius);
+}
+
+.stat-strip{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:36px;
+  padding:0 24px 70px;max-width:900px;margin:0 auto;text-align:center;
+}
+.stat{min-width:120px;}
+.stat .num{font-family:'Sora',sans-serif;font-weight:800;font-size:2.2rem;
+  background:linear-gradient(90deg,var(--violet),var(--coral));
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat .label{font-size:0.85rem;color:var(--ink-muted);font-weight:600;}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.6s ease, transform 0.6s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+.steps-grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+.step-card{
+  background:var(--white);border-radius:var(--radius);padding:28px 26px;
+  border:1px solid rgba(20,19,43,0.06);box-shadow:var(--shadow);
+}
+.step-num{
+  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-weight:800;color:var(--white);margin-bottom:16px;font-size:1.05rem;
+}
+.step-card:nth-child(1) .step-num{background:linear-gradient(135deg,var(--violet),var(--sky));}
+.step-card:nth-child(2) .step-num{background:linear-gradient(135deg,var(--coral),var(--gold));}
+.step-card:nth-child(3) .step-num{background:linear-gradient(135deg,var(--mint),var(--sky));}
+.step-card h3{font-size:1.05rem;margin-bottom:6px;}
+.step-card p{font-size:0.92rem;margin-bottom:0;}
+
+.section-tinted{background:var(--ink);color:var(--white);}
+.section-tinted .section-head h2{color:var(--white);}
+.quote-block{max-width:760px;margin:0 auto;text-align:center;}
+.quote-mark{
+  font-family:'Sora',sans-serif;font-size:3.5rem;line-height:1;font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--coral));
+  -webkit-background-clip:text;background-clip:text;color:transparent;display:block;margin-bottom:8px;
+}
+.quote-block p{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(1.2rem,3vw,1.6rem);
+  color:var(--white);line-height:1.4;margin-bottom:20px;}
+.quote-attribution{color:rgba(255,255,255,0.6);font-size:0.9rem;font-weight:600;}
+
+.card .card-icon{
+  width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.card.accent-video .card-icon{background:#FFE4EA;color:#C2184A;}
+.card.accent-article .card-icon{background:#E0F1FF;color:#0B5FA5;}
+.card.accent-pdf .card-icon{background:#FFF2CC;color:#8A5A00;}
+.card-top-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+
+.site-footer{background:var(--ink);color:rgba(255,255,255,0.75);padding:52px 24px 28px;margin-top:40px;}
+.footer-inner{max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;}
+.site-footer h3{color:var(--white);font-size:1rem;}
+.site-footer a{color:rgba(255,255,255,0.75);text-decoration:none;}
+.site-footer a:hover{color:var(--gold);}
+.footer-bottom{
+  max-width:1160px;margin:32px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,0.12);
+  font-size:0.85rem;text-align:center;color:rgba(255,255,255,0.5);
+}
+
+.admin-shell{min-height:100vh;display:flex;}
+.admin-login-wrap{
+  min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;
+  background:var(--ink);
+  padding:24px;position:relative;overflow:hidden;
+}
+.admin-login-wrap::before{
+  content:'';position:absolute;top:-120px;left:-100px;width:360px;height:360px;
+  background:var(--violet);border-radius:50%;filter:blur(90px);opacity:0.5;
+}
+.admin-login-wrap::after{
+  content:'';position:absolute;bottom:-140px;right:-100px;width:380px;height:380px;
+  background:var(--coral);border-radius:50%;filter:blur(90px);opacity:0.4;
+}
+.login-card{
+  background:var(--white);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.35);position:relative;z-index:2;
+}
+.login-card .logo-mark{margin-bottom:18px;}
+.login-card h1{font-size:1.5rem;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:0.85rem;font-weight:700;margin-bottom:6px;color:var(--ink);}
+.field input, .field select, .field textarea{
+  width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid rgba(20,19,43,0.15);
+  font-size:0.95rem;font-family:inherit;background:var(--paper);
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none;border-color:var(--violet);background:var(--white);
+}
+.form-error{
+  background:#FFE4EA;color:#C2184A;padding:10px 14px;border-radius:10px;
+  font-size:0.88rem;margin-bottom:16px;display:none;
+}
+.form-note{
+  background:#E0F1FF;color:#0B5FA5;padding:10px 14px;border-radius:10px;
+  font-size:0.85rem;margin-bottom:16px;display:none;
+}
+
+.admin-app{display:none;width:100%;min-height:100vh;background:var(--paper);}
+.admin-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 28px;background:var(--white);border-bottom:1px solid rgba(20,19,43,0.08);
+}
+.admin-body{display:flex;min-height:calc(100vh - 65px);}
+.admin-sidebar{
+  width:220px;flex-shrink:0;background:var(--ink);padding:24px 0;
+}
+.admin-sidebar button{
+  width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.75);
+  padding:13px 24px;font-size:0.95rem;font-weight:700;
+}
+.admin-sidebar button.active{background:rgba(255,255,255,0.08);color:var(--white);border-left:3px solid var(--gold);}
+.admin-main{flex:1;padding:32px;max-width:920px;}
+.admin-main h2{margin-bottom:4px;}
+.admin-main .sub{color:var(--ink-muted);margin-bottom:28px;}
+
+.panel{display:none;}
+.panel.active{display:block;}
+
+.row-list{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.row-item{
+  background:var(--white);border:1px solid rgba(20,19,43,0.08);border-radius:12px;
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+}
+.row-item .row-main{flex:1;min-width:0;}
+.row-item .row-title{font-weight:800;font-size:0.95rem;}
+.row-item .row-meta{font-size:0.8rem;color:var(--ink-muted);}
+.row-item .row-actions{display:flex;gap:6px;flex-shrink:0;}
+.icon-btn{
+  background:var(--paper);border:1px solid rgba(20,19,43,0.1);border-radius:8px;
+  padding:7px 10px;font-size:0.85rem;font-weight:700;color:var(--ink);
+}
+.icon-btn.danger{color:var(--coral);}
+.icon-btn:hover{background:rgba(108,76,255,0.08);}
+
+.panel-card{
+  background:var(--white);border:1px solid rgba(20,19,43,0.08);border-radius:16px;padding:24px;max-width:520px;
+}
+.panel-card h3{font-size:1.05rem;margin-bottom:18px;}
+.inline-toggle{display:flex;align-items:center;gap:8px;font-size:0.9rem;font-weight:700;margin-bottom:16px;}
+
+.tag-select{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.tag-select button{
+  padding:8px 16px;border-radius:999px;border:1.5px solid rgba(20,19,43,0.15);
+  background:var(--paper);font-size:0.88rem;font-weight:700;color:var(--ink);
+}
+.tag-select button.active{background:var(--ink);color:var(--white);border-color:var(--ink);}
+
+.msg-toast{
+  position:fixed;bottom:24px;right:24px;background:var(--ink);color:var(--white);
+  padding:12px 20px;border-radius:10px;font-size:0.9rem;font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);opacity:0;transform:translateY(10px);
+  transition:0.25s;pointer-events:none;z-index:100;
+}
+.msg-toast.show{opacity:1;transform:translateY(0);}
+
+@media (max-width:760px){
+  .admin-body{flex-direction:column;}
+  .admin-sidebar{width:100%;display:flex;overflow-x:auto;padding:8px;}
+  .admin-sidebar button{white-space:nowrap;width:auto;border-left:none;border-bottom:3px solid transparent;}
+  .admin-sidebar button.active{border-left:none;border-bottom-color:var(--gold);}
+  .admin-main{padding:20px;}
+}
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="#home" class="logo">
+      <span class="logo-mark"></span>
+      Youth Connect USA
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu"><span></span></button>
+    <ul class="tabs" id="tabsList">
+      <li><button class="tab-btn active" data-slug="home">Home</button></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero" id="heroSection">
+  <div class="hero-blob-gold"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Youth Connect USA</span>
+    <h1>Every young dreamer deserves <span class="highlight">a way forward.</span></h1>
+    <p class="lead">We connect youth with mentors, resources, and real opportunity — helping the next generation build their own version of the American dream.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Get involved</a>
+      <a href="#mission" class="btn btn-outline">Our mission</a>
+    </div>
+  </div>
+</section>
+
+<div class="stat-strip">
+  <div class="stat"><div class="num">1:1</div><div class="label">Mentor matching</div></div>
+  <div class="stat"><div class="num">100%</div><div class="label">Free for youth</div></div>
+  <div class="stat"><div class="num">50</div><div class="label">States reached</div></div>
+</div>
+
+<main id="mainContent">
+  <section class="section" id="homeIntro">
+    <div class="section-head reveal">
+      <span class="eyebrow">What we do</span>
+      <h2>Real people. Real resources. Real progress.</h2>
+      <p>Youth Connect USA links students and young adults with mentorship, guidance, and practical tools to help them chase what's next — whatever that looks like for them.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">1</div>
+        <h3>Get matched</h3>
+        <p>Tell us where you're headed and we connect you with a mentor who's been there.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">2</div>
+        <h3>Build a plan</h3>
+        <p>Work through resources, guides, and check-ins built around your goals.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">3</div>
+        <h3>Move forward</h3>
+        <p>Take the next real step — school, work, or whatever your dream looks like.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="latestSection">
+    <div class="section-head reveal">
+      <span class="eyebrow">Our work</span>
+      <h2>Selected videos, articles, and resources</h2>
+    </div>
+    <div class="grid" id="latestGrid">
+      <div class="empty-state" id="latestEmpty">New videos, articles, and resources will appear here.</div>
+    </div>
+  </section>
+
+  <section class="section section-tinted">
+    <div class="quote-block reveal">
+      <span class="quote-mark">&ldquo;</span>
+      <p>Youth Connect USA gave me someone in my corner who actually understood where I was trying to go.</p>
+      <div class="quote-attribution">A student in our mentorship program</div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h3>Youth Connect USA</h3>
+      <p style="max-width:280px;">Connecting young people to the mentors, opportunity, and community they need to move forward.</p>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <div id="footerTabs" style="display:flex;flex-direction:column;gap:8px;">
+        <a href="#home">Home</a>
+      </div>
+    </div>
+    <div>
+      <h3>Admin</h3>
+      <a href="admin.html">Admin login</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; <span id="year"></span> Youth Connect USA. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ---- Edit these two lines with your Supabase project values ----
+// Find them in Supabase: Project Settings -> API
+const SUPABASE_URL = "https://ccfpaznrsbryqipwsgku.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_7Gtsz-rMJzUYxR60QEBPNA_H-47_Lqh";
+// ------------------------------------------------------------------
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const tabsList = document.getElementById('tabsList');
+const footerTabs = document.getElementById('footerTabs');
+const heroSection = document.getElementById('heroSection');
+const homeIntro = document.getElementById('homeIntro');
+const latestSection = document.getElementById('latestSection');
+const mainContent = document.getElementById('mainContent');
+const navToggle = document.getElementById('navToggle');
+
+navToggle.addEventListener('click', () => tabsList.classList.toggle('open'));
+
+let allTabs = [];
+
+function el(tag, opts = {}, children = []) {
+  const node = document.createElement(tag);
+  if (opts.class) node.className = opts.class;
+  if (opts.text) node.textContent = opts.text;
+  if (opts.attrs) {
+    for (const [k, v] of Object.entries(opts.attrs)) node.setAttribute(k, v);
+  }
+  children.forEach(c => c && node.appendChild(c));
+  return node;
+}
+
+function typeBadgeClass(type) {
+  if (type === 'video') return 'badge-video';
+  if (type === 'pdf') return 'badge-pdf';
+  return 'badge-article';
+}
+function typeLabel(type) {
+  if (type === 'video') return 'Video';
+  if (type === 'pdf') return 'PDF';
+  return 'Article';
+}
+function typeLinkLabel(type) {
+  if (type === 'video') return 'Watch video →';
+  if (type === 'pdf') return 'View PDF →';
+  return 'Read more →';
+}
+
+function typeIcon(type) {
+  if (type === 'video') {
+    return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>';
+  }
+  if (type === 'pdf') {
+    return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M15 2v5h5"/></svg>';
+  }
+  return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>';
+}
+
+function contentCard(item, featured) {
+  const badge = el('span', { class: `type-badge ${typeBadgeClass(item.type)}`, text: typeLabel(item.type) });
+  const icon = el('div', { class: 'card-icon' });
+  icon.innerHTML = typeIcon(item.type);
+  const topRow = el('div', { class: 'card-top-row' }, [badge, icon]);
+  const title = el('h3', { text: item.title });
+  const desc = item.description ? el('p', { text: item.description }) : null;
+  const cardClass = `card accent-${item.type}${featured ? ' featured' : ''}`;
+  const card = el('div', { class: cardClass }, [topRow, title, desc]);
+  if (item.url) {
+    const link = el('a', {
+      class: 'card-link',
+      text: typeLinkLabel(item.type),
+      attrs: { href: item.url, target: '_blank', rel: 'noopener noreferrer' }
+    });
+    card.appendChild(link);
+  } else if (item.body) {
+    const bodyP = el('p', { text: item.body.length > 220 ? item.body.slice(0, 220) + '…' : item.body });
+    card.appendChild(bodyP);
+  }
+  return card;
+}
+
+async function loadTabs() {
+  const { data, error } = await supabase
+    .from('tabs')
+    .select('*')
+    .eq('is_published', true)
+    .order('position', { ascending: true });
+
+  if (error || !data) return;
+  allTabs = data;
+  renderNav();
+}
+
+function renderNav() {
+  tabsList.innerHTML = '';
+  footerTabs.innerHTML = '';
+
+  const homeBtn = el('button', { class: 'tab-btn', text: 'Home', attrs: { 'data-slug': 'home' } });
+  homeBtn.addEventListener('click', () => navigateTo('home'));
+  tabsList.appendChild(el('li', {}, [homeBtn]));
+
+  const homeLink = el('a', { text: 'Home', attrs: { href: '#home' } });
+  footerTabs.appendChild(homeLink);
+
+  allTabs.forEach(tab => {
+    const btn = el('button', { class: 'tab-btn', text: tab.title, attrs: { 'data-slug': tab.slug } });
+    btn.addEventListener('click', () => navigateTo(tab.slug));
+    tabsList.appendChild(el('li', {}, [btn]));
+
+    const link = el('a', { text: tab.title, attrs: { href: '#' + tab.slug } });
+    footerTabs.appendChild(link);
+  });
+
+  setActiveState(location.hash ? location.hash.slice(1) : 'home');
+}
+
+function setActiveState(slug) {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-slug') === slug);
+  });
+}
+
+async function navigateTo(slug) {
+  location.hash = slug;
+  tabsList.classList.remove('open');
+  setActiveState(slug);
+
+  document.querySelectorAll('.tab-page').forEach(n => n.remove());
+
+  if (slug === 'home') {
+    heroSection.style.display = '';
+    homeIntro.style.display = '';
+    latestSection.style.display = '';
+    return;
+  }
+
+  heroSection.style.display = 'none';
+  homeIntro.style.display = 'none';
+  latestSection.style.display = 'none';
+
+  const tab = allTabs.find(t => t.slug === slug);
+  if (!tab) return;
+
+  const section = el('section', { class: 'section tab-page' });
+  const intro = el('div', { class: 'tab-intro reveal' }, [
+    el('h1', { text: tab.title }),
+    tab.intro ? el('p', { text: tab.intro }) : null
+  ]);
+  section.appendChild(intro);
+
+  const grid = el('div', { class: 'grid' });
+  section.appendChild(grid);
+  mainContent.appendChild(section);
+
+  const { data: items, error } = await supabase
+    .from('content_items')
+    .select('*')
+    .eq('tab_id', tab.id)
+    .eq('is_published', true)
+    .order('position', { ascending: true });
+
+  if (error || !items || items.length === 0) {
+    grid.appendChild(el('div', { class: 'empty-state', text: 'New content for this page is coming soon.' }));
+    return;
+  }
+  items.forEach((item, idx) => grid.appendChild(contentCard(item, idx === 0)));
+}
+
+async function loadLatest() {
+  const { data, error } = await supabase
+    .from('content_items')
+    .select('*')
+    .eq('is_published', true)
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  const grid = document.getElementById('latestGrid');
+  const empty = document.getElementById('latestEmpty');
+  if (error || !data || data.length === 0) return;
+  empty.remove();
+  data.forEach((item, idx) => grid.appendChild(contentCard(item, idx === 0)));
+}
+
+window.addEventListener('hashchange', () => {
+  const slug = location.hash ? location.hash.slice(1) : 'home';
+  navigateTo(slug);
+});
+
+loadTabs().then(() => {
+  const slug = location.hash ? location.hash.slice(1) : 'home';
+  if (slug !== 'home') navigateTo(slug);
+});
+loadLatest();
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+function observeReveals() {
+  document.querySelectorAll('.reveal:not(.in)').forEach(node => revealObserver.observe(node));
+}
+observeReveals();
+new MutationObserver(observeReveals).observe(mainContent, { childList: true, subtree: true });
+
+</script>
+</body>
+</html>
